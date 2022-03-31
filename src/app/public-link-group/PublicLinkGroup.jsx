@@ -1,8 +1,15 @@
 import "./public-link-group.css";
-import { Spinner } from "evergreen-ui";
+import {
+  Button,
+  DuplicateIcon,
+  IconButton,
+  Spinner,
+  toaster,
+} from "evergreen-ui";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import client from "../common/client";
+import axios from "axios";
 
 const PublicLinkGroup = () => {
   const { slug } = useParams();
@@ -17,9 +24,43 @@ const PublicLinkGroup = () => {
           slug: slug,
         },
       })
-      .then((r) => setLinkGroup(r[0]))
+      .then((r) => {
+        if (!r.length) {
+          setErr(true);
+        } else {
+          const lg = r[0];
+          setLinkGroup({
+            ...lg,
+            links: lg.links.map((link) => {
+              return {
+                ...link,
+                isLoadingIcon: true,
+              };
+            }),
+          });
+          return lg;
+        }
+      })
+      // .then((r) => {
+      //   if (r) {
+      //     Promise.all(
+      //       r.links.map((l) =>
+      //         axios.get(
+      //           `https://s2.googleusercontent.com/s2/favicons?domain_url=https://www.youtube.com`
+      //         )
+      //       )
+      //     ).then(console.log).catch(console.log);
+      //   }
+      // })
       .catch(() => setErr(true));
   }, []);
+
+  console.log(linkgroup);
+  const getIconFromUrl = (url) => {
+    return axios.get(
+      `https://s2.googleusercontent.com/s2/favicons?domain_url=${url}`
+    );
+  };
 
   if (err) {
     return <div>error</div>;
@@ -35,13 +76,33 @@ const PublicLinkGroup = () => {
 
   return (
     <div className="b-plg">
-      {linkgroup.links.map((link) => {
-        return (
-          <div key={link._id}>
-            {link.name} {link.link}
-          </div>
-        );
-      })}
+      <div className="b-plg__links">
+        <h3>Blended links</h3>
+        {linkgroup.links.map((link, idx) => {
+          return (
+            <div className="b-plg__link" key={idx}>
+              <div className="b-plg__link-header">
+                {link.name}
+                <IconButton
+                  icon={DuplicateIcon}
+                  size="small"
+                  onClick={() =>
+                    navigator.clipboard
+                      .writeText(link.link)
+                      .then(() =>
+                        toaster.success("Copied!",{id:'', duration: 2})
+                      ) 
+                  }
+                />
+              </div>
+              <div className="b-plg__link-body">
+                {/* {link.isLoadingIcon && <Spinner />} */}
+                {link.link}
+              </div>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };
