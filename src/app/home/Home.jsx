@@ -7,7 +7,9 @@ import PublicLinkGroup from "../public-link-group";
 const Home = () => {
   return (
     <div className="b-home">
-      <div className="b-nav"></div>
+      <div className="b-nav">
+        Blender
+      </div>
       <div className="b-home__main">
         <Routes>
           <Route path="/" element={<LinkGroup />} />

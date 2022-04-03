@@ -33,18 +33,7 @@ const PublicLinkGroup = () => {
         } else {
           const lg = r[0];
           lg.links = [
-            ...lg.links,
-            ...lg.links,
-            ...lg.links,
-            ...lg.links,
-            ...lg.links,
-            ...lg.links,
-            ...lg.links,
-            ...lg.links,
-            ...lg.links,
-            ...lg.links,
-            ...lg.links,
-            ...lg.links,
+            ...lg.links
           ];
           lg.links = lg.links.map((link) => {
             return {
@@ -102,8 +91,8 @@ const PublicLinkGroup = () => {
   return (
     <div className="b-plg">
       <div className="b-plg__container">
+        <h3>Blended links</h3>
         <div className="b-plg__links">
-          <h3>Blended links</h3>
           <div className="b-flex-end">
             <Button
               onClick={() => {
