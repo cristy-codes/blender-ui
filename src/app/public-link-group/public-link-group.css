@@ -1,9 +1,21 @@
 .b-plg {
   height: 100%;
-  display: flex;
+  overflow: auto;
+  /* display: flex;
   justify-content: center;
-  align-items: center;
-  font-family: 'Courier New', monospace;
+  align-items: center; */
+  /* font-family: 'Courier New', monospace; */
+}
+
+.b-plg__container {
+  width: 600px;
+  margin: auto;
+  padding: 100px 0;
+}
+
+.b-flex-end {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .b-plg__links {
@@ -13,11 +25,22 @@
 }
 
 .b-plg__link {
-  height: 75px;
-  width: 500px;
-  border-radius: 10px;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 36px;
+  padding: 8px;
+  border-radius: 16px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px,
     rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+  background-color: azure;
+}
+
+.b-plg__link-main {
+  border-radius: 16px;
 }
 
 .b-plg__link-header {
@@ -35,4 +58,10 @@
   border-radius: 10px;
   display: flex;
   justify-content: space-between;
+}
+
+.b-plg__link-body > a {
+  max-width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

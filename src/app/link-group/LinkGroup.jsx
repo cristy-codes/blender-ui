@@ -83,7 +83,7 @@ const LinkGroup = () => {
             </div>
           );
         })}
-        <Button onClick={createLinkGroup}> Create </Button>
+        <Button onClick={createLinkGroup}>Create</Button>
       </div>
 
       <Button onClick={addLinkRow}>add link</Button>

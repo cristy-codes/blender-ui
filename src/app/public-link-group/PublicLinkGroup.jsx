@@ -10,12 +10,15 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import client from "../common/client";
 import axios from "axios";
+import { v4 } from "uuid";
 
 const PublicLinkGroup = () => {
   const { slug } = useParams();
   const [linkgroup, setLinkGroup] = useState();
   const [err, setErr] = useState(false);
 
+  const [isHovering, setIsHovering] = useState({});
+  console.log(isHovering);
   useEffect(() => {
     client
       .service("linkgroup")
@@ -29,15 +32,37 @@ const PublicLinkGroup = () => {
           setErr(true);
         } else {
           const lg = r[0];
-          setLinkGroup({
-            ...lg,
-            links: lg.links.map((link) => {
-              return {
-                ...link,
-                isLoadingIcon: true,
-              };
-            }),
+          lg.links = [
+            ...lg.links,
+            ...lg.links,
+            ...lg.links,
+            ...lg.links,
+            ...lg.links,
+            ...lg.links,
+            ...lg.links,
+            ...lg.links,
+            ...lg.links,
+            ...lg.links,
+            ...lg.links,
+            ...lg.links,
+          ];
+          lg.links = lg.links.map((link) => {
+            return {
+              ...link,
+              isLoadingIcon: true,
+              id: v4(),
+            };
           });
+
+          setLinkGroup(lg);
+          setIsHovering(
+            lg.links.reduce((a, c) => {
+              return {
+                ...a,
+                [c.id]: false,
+              };
+            }, {})
+          );
           return lg;
         }
       })
@@ -76,32 +101,52 @@ const PublicLinkGroup = () => {
 
   return (
     <div className="b-plg">
-      <div className="b-plg__links">
-        <h3>Blended links</h3>
-        {linkgroup.links.map((link, idx) => {
-          return (
-            <div className="b-plg__link" key={idx}>
-              <div className="b-plg__link-header">
-                {link.name}
-                <IconButton
-                  icon={DuplicateIcon}
-                  size="small"
-                  onClick={() =>
-                    navigator.clipboard
-                      .writeText(link.link)
-                      .then(() =>
-                        toaster.success("Copied!",{id:'', duration: 2})
-                      ) 
-                  }
-                />
-              </div>
-              <div className="b-plg__link-body">
-                {/* {link.isLoadingIcon && <Spinner />} */}
-                {link.link}
-              </div>
-            </div>
-          );
-        })}
+      <div className="b-plg__container">
+        <div className="b-plg__links">
+          <h3>Blended links</h3>
+          <div className="b-flex-end">
+            <Button
+              onClick={() => {
+                linkgroup.links.forEach((link) => {
+                  window.open(link.link);
+                });
+              }}
+            >
+              Open all
+            </Button>
+          </div>
+          {linkgroup.links.map((link, idx) => {
+            return (
+              <a
+                className="b-plg__link"
+                key={idx}
+                href={link.link}
+                target="_blank"
+                rel="noreferrer"
+                onMouseEnter={() =>
+                  setIsHovering((prev) => {
+                    return {
+                      ...prev,
+                      [link.id]: true,
+                    };
+                  })
+                }
+                onMouseLeave={() =>
+                  setIsHovering((prev) => {
+                    return {
+                      ...prev,
+                      [link.id]: false,
+                    };
+                  })
+                }
+              >
+                <div className="b-plg__link-main">
+                  {isHovering[link.id] ? link.link : link.name}
+                </div>
+              </a>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
