@@ -11,6 +11,7 @@ import { useParams } from "react-router-dom";
 import client from "../common/client";
 import axios from "axios";
 import { v4 } from "uuid";
+import ErrorIcon404 from "./error404.png"
 
 const PublicLinkGroup = () => {
   const { slug } = useParams();
@@ -77,7 +78,9 @@ const PublicLinkGroup = () => {
   };
 
   if (err) {
-    return <div>error</div>;
+    return <div className="b-home__icon-error">
+      <img src={ErrorIcon404} alt="error" className="b-home__icon-error"/>
+    </div>;
   }
 
   if (!linkgroup) {
