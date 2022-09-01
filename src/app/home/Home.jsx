@@ -9,7 +9,7 @@ const Home = () => {
   return (
     <div className="b-home">
       <div className="b-nav">
-      <img src={BlenderIcon} alt="Blender" className="b-home__icon"/>
+        <img src={BlenderIcon} alt="Blender" className="b-home__icon" />
       </div>
       <div className="b-home__main">
         <Routes>

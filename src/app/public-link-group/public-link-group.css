@@ -1,21 +1,11 @@
 .b-plg {
   height: 100%;
   overflow: auto;
-  /* display: flex;
-  justify-content: center;
-  align-items: center; */
-  /* font-family: 'Courier New', monospace; */
 }
 
 .b-plg__container {
   width: 600px;
   margin: auto;
-  padding: 100px 0;
-}
-
-.b-flex-end {
-  display: flex;
-  justify-content: flex-end;
 }
 
 .b-plg__links {

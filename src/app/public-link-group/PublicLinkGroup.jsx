@@ -4,6 +4,7 @@ import {
   DuplicateIcon,
   IconButton,
   Spinner,
+  TextInput,
   toaster,
 } from "evergreen-ui";
 import React, { useEffect, useState } from "react";
@@ -11,7 +12,7 @@ import { useParams } from "react-router-dom";
 import client from "../common/client";
 import axios from "axios";
 import { v4 } from "uuid";
-import ErrorIcon404 from "./error404.png"
+import ErrorIcon404 from "./error404.png";
 
 const PublicLinkGroup = () => {
   const { slug } = useParams();
@@ -19,7 +20,7 @@ const PublicLinkGroup = () => {
   const [err, setErr] = useState(false);
 
   const [isHovering, setIsHovering] = useState({});
-  console.log(isHovering);
+
   useEffect(() => {
     client
       .service("linkgroup")
@@ -33,9 +34,7 @@ const PublicLinkGroup = () => {
           setErr(true);
         } else {
           const lg = r[0];
-          lg.links = [
-            ...lg.links
-          ];
+          lg.links = [...lg.links];
           lg.links = lg.links.map((link) => {
             return {
               ...link,
@@ -70,7 +69,6 @@ const PublicLinkGroup = () => {
       .catch(() => setErr(true));
   }, []);
 
-  console.log(linkgroup);
   const getIconFromUrl = (url) => {
     return axios.get(
       `https://s2.googleusercontent.com/s2/favicons?domain_url=${url}`
@@ -78,9 +76,11 @@ const PublicLinkGroup = () => {
   };
 
   if (err) {
-    return <div className="b-home__icon-error">
-      <img src={ErrorIcon404} alt="error" className="b-home__icon-error"/>
-    </div>;
+    return (
+      <div className="b-home__icon-error">
+        <img src={ErrorIcon404} alt="error" className="b-home__icon-error" />
+      </div>
+    );
   }
 
   if (!linkgroup) {
@@ -96,7 +96,22 @@ const PublicLinkGroup = () => {
       <div className="b-plg__container">
         <h3>Blended links</h3>
         <div className="b-plg__links">
-          <div className="b-flex-end">
+          <div className="b-flex-btw b-flex-vc">
+            <div className="b-flex-vc">
+              <TextInput
+                className="b-mr-tiny b-text"
+                disabled
+                value={window.location.href}
+              />
+              <IconButton
+                icon={DuplicateIcon}
+                onClick={() =>
+                  navigator.clipboard
+                    .writeText(window.location.href)
+                    .then(() => toaster.success("Copied!"))
+                }
+              />
+            </div>
             <Button
               onClick={() => {
                 linkgroup.links.forEach((link) => {

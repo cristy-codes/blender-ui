@@ -1,6 +1,9 @@
 .b-home {
-  height: 100vh;
+  display: grid;
+  grid-template-rows: 100px 1fr;
   background-color: #f5f7ff;
+  overflow: auto;
+  height: 100%;
 }
 
 .b-nav {
@@ -12,10 +15,6 @@
 }
 
 .b-home__main {
-  height: 100vh;
-  overflow: hidden;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
-    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
 .b-home__icon {
