@@ -21,7 +21,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "NODE_ENV=production yarn build && scp -r build/* site:/var/www/blender.cristyg.com/html/"
   },
   "eslintConfig": {
     "extends": [
