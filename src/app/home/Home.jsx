@@ -1,6 +1,6 @@
 import "./home.css";
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Link } from "react-router-dom";
 import LinkGroup from "../link-group";
 import PublicLinkGroup from "../public-link-group";
 import BlenderIcon from "./Blender.svg";
@@ -9,7 +9,9 @@ const Home = () => {
   return (
     <div className="b-home">
       <div className="b-nav">
-        <img src={BlenderIcon} alt="Blender" className="b-home__icon" />
+        <Link to="/">
+          <img src={BlenderIcon} alt="Blender" className="b-home__icon" />
+        </Link>
       </div>
       <div className="b-home__main">
         <Routes>
