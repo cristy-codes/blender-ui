@@ -11,12 +11,18 @@ const defaultLink = () => ({
   name: "",
   link: "",
 });
-
+const MAX_NUM_LINKS = 12;
 const LinkGroup = () => {
   const navigate = useNavigate();
   const [links, setLinks] = useState([defaultLink(), defaultLink()]);
 
-  const addLinkRow = () => setLinks((prev) => [...prev, defaultLink()]);
+  const addLinkRow = () => {
+    if (links.length > MAX_NUM_LINKS) {
+      toaster.danger("Exceeded number of links");
+    } else {
+      setLinks((prev) => [...prev, defaultLink()]);
+    }
+  };
 
   const removeLinkRow = (id) =>
     setLinks((prev) => prev.filter((link) => link.id !== id));
@@ -46,7 +52,9 @@ const LinkGroup = () => {
         }),
       })
       .then((r) => navigate(`/b/${r.slug}`))
-      .catch(() => toaster.danger("One or more of your links are invalid"));
+      .catch((e) =>
+        toaster.danger("There was an error", { description: `${e.message}` })
+      );
 
   return (
     <div className="b-linkgroup">
@@ -64,7 +72,12 @@ const LinkGroup = () => {
           ))}
         </div>
         <div className="b-linkgroup__actions">
-          <Button onClick={addLinkRow}>Add link</Button>
+          <Button
+            onClick={addLinkRow}
+            disabled={links.length >= MAX_NUM_LINKS ? true : false}
+          >
+            Add link
+          </Button>
           <Button
             onClick={createLinkGroup}
             intent="success"
