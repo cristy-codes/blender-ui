@@ -1,5 +1,5 @@
 import "./link-group.css";
-import { Button } from "evergreen-ui";
+import { Button, toaster } from "evergreen-ui";
 import React, { useState } from "react";
 import { v4 } from "uuid";
 import client from "../common/client";
@@ -46,7 +46,7 @@ const LinkGroup = () => {
         }),
       })
       .then((r) => navigate(`/b/${r.slug}`))
-      .catch(console.log);
+      .catch(() => toaster.danger("One or more of your links are invalid"));
 
   return (
     <div className="b-linkgroup">

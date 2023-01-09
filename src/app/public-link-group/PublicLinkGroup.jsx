@@ -28,7 +28,6 @@ const PublicLinkGroup = () => {
         },
       })
       .then((r) => {
-        console.log(r);
         if (!r.length) {
           setErr(true);
         } else {
