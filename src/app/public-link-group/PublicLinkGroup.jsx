@@ -105,10 +105,3 @@ const PublicLinkGroup = () => {
 };
 
 export default PublicLinkGroup;
-
-/**
- * three cases:
- * - loading: waiting to see if the backend returned data
- * - data is returned successfully: linkgroup will be returned
- * - error: .catch executed only. linkgroup does not exist etc
- */
