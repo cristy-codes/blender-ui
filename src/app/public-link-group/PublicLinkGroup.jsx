@@ -10,16 +10,14 @@ import {
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import client from "../common/client";
-import axios from "axios";
 import { v4 } from "uuid";
 import ErrorIcon404 from "./error404.png";
+import Link from "./Link";
 
 const PublicLinkGroup = () => {
   const { slug } = useParams();
   const [linkgroup, setLinkGroup] = useState();
   const [err, setErr] = useState(false);
-
-  const [isHovering, setIsHovering] = useState({});
 
   useEffect(() => {
     client
@@ -30,11 +28,11 @@ const PublicLinkGroup = () => {
         },
       })
       .then((r) => {
+        console.log(r);
         if (!r.length) {
           setErr(true);
         } else {
           const lg = r[0];
-          lg.links = [...lg.links];
           lg.links = lg.links.map((link) => {
             return {
               ...link,
@@ -44,36 +42,12 @@ const PublicLinkGroup = () => {
           });
 
           setLinkGroup(lg);
-          setIsHovering(
-            lg.links.reduce((a, c) => {
-              return {
-                ...a,
-                [c.id]: false,
-              };
-            }, {})
-          );
           return lg;
         }
       })
-      // .then((r) => {
-      //   if (r) {
-      //     Promise.all(
-      //       r.links.map((l) =>
-      //         axios.get(
-      //           `https://s2.googleusercontent.com/s2/favicons?domain_url=https://www.youtube.com`
-      //         )
-      //       )
-      //     ).then(console.log).catch(console.log);
-      //   }
-      // })
+
       .catch(() => setErr(true));
   }, []);
-
-  const getIconFromUrl = (url) => {
-    return axios.get(
-      `https://s2.googleusercontent.com/s2/favicons?domain_url=${url}`
-    );
-  };
 
   if (err) {
     return (
@@ -122,36 +96,8 @@ const PublicLinkGroup = () => {
               Open all
             </Button>
           </div>
-          {linkgroup.links.map((link, idx) => {
-            return (
-              <a
-                className="b-plg__link"
-                key={idx}
-                href={link.link}
-                target="_blank"
-                rel="noreferrer"
-                onMouseEnter={() =>
-                  setIsHovering((prev) => {
-                    return {
-                      ...prev,
-                      [link.id]: true,
-                    };
-                  })
-                }
-                onMouseLeave={() =>
-                  setIsHovering((prev) => {
-                    return {
-                      ...prev,
-                      [link.id]: false,
-                    };
-                  })
-                }
-              >
-                <div className="b-plg__link-main">
-                  {isHovering[link.id] ? link.link : link.name}
-                </div>
-              </a>
-            );
+          {linkgroup.links.map((link) => {
+            return <Link key={link.id} link={link} />;
           })}
         </div>
       </div>
